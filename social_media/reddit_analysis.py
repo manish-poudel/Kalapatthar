@@ -29,10 +29,14 @@ class RedditAnalysis:
             keyword_analysis_parent_data_dict = firebase_keyword_analysis_parent_doc.to_dict()
             keywords_list = keyword_analysis_parent_data_dict['keywords']
             last_post_name = keyword_analysis_parent_data_dict['last_post_name']
+            reddit_post_limit = keyword_analysis_parent_data_dict['reddit_post_limit']
+
+            param = {'limit': reddit_post_limit}
+            if last_post_name:
+                param = {'limit': reddit_post_limit, "before": last_post_name}
 
             # Get reddit data for the particular forum
-            res = reddit_data.get_subreddit(token, forum, datatype, {
-                'limit': 5, "before": last_post_name})
+            res = reddit_data.get_subreddit(token, forum, datatype, param)
 
             if res.status_code == 200:
                 posts = reddit_data.decode_res(res)
