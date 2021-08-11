@@ -11,10 +11,10 @@ class RedditData:
 
     @staticmethod
     def get_token():
-        auth = requests.auth.HTTPBasicAuth(os.getenv('REDDIT_CLIENT_ID'), os.getenv('REDDIT_SECRET_TOKEN'))
+        auth = requests.auth.HTTPBasicAuth('JKI6B70EM--YMajhUZ-WEg', 'nLnHdjZzcHxEAhCvdTpH_7HK2zgzjQ')
         data = {'grant_type': 'password',
-                'username': os.getenv('REDDIT_USERNAME'),
-                'password': os.getenv('REDDIT_PASSWORD')}
+                'username': 'omekus',
+                'password': 'RedditM@PwdDeko'}
         headers = {'User-Agent': 'KalaPatthar/1.0.0'}
 
         res = requests.post('https://www.reddit.com/api/v1/access_token',
