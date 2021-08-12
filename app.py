@@ -1,7 +1,8 @@
 from flask import Flask, request
 
 from social_media.reddit_analysis import RedditAnalysis
-from social_media.reddit_data import RedditData
+import os
+from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials
 
@@ -17,13 +18,22 @@ def index():
 
 @app.route('/analysis/keyword/subreddit')
 def subreddit_analysis():
+    load_dotenv()
+
     # Get params from http post request
     forum = request.args.get('forum')
     datatype = request.args.get('datatype')
-    reddit_analysis = RedditAnalysis()
-    analysis_result = reddit_analysis.perform_keyword_analysis(forum, datatype)
-    reddit_analysis.saveDataToFirestore(analysis_result)
-    return analysis_result
+    api_key = request.args.get('api_key')
+    if api_key:
+        if api_key != os.environ.get('ANALYSIS_API_KEY'):
+            return {"error": "Authentication fail"}
+        else:
+            reddit_analysis = RedditAnalysis()
+            analysis_result = reddit_analysis.perform_keyword_analysis(forum, datatype)
+            reddit_analysis.saveDataToFirestore(analysis_result)
+            return analysis_result
+    else:
+        return {"error": "Authentication required"}
 
 
 @app.route('/analysis/subreddit/comment')
