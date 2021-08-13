@@ -19,19 +19,14 @@ def index():
 @app.route('/analysis/keyword/subreddit')
 def subreddit_analysis():
     load_dotenv()
-
-    # Get params from http post request
-    forum = request.args.get('forum')
-    datatype = request.args.get('datatype')
     api_key = request.args.get('api_key')
     if api_key:
         if api_key != os.environ.get('ANALYSIS_API_KEY'):
             return {"error": "Authentication fail"}
         else:
             reddit_analysis = RedditAnalysis()
-            analysis_result = reddit_analysis.perform_keyword_analysis(forum, datatype)
-            reddit_analysis.saveDataToFirestore(analysis_result)
-            return analysis_result
+            reddit_analysis.perform_keyword_analysis()
+            return {"success": "Completed and saved"}
     else:
         return {"error": "Authentication required"}
 

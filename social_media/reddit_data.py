@@ -1,13 +1,9 @@
 import requests
 import os
-from dotenv import load_dotenv
 from datetime import datetime
 
 
 class RedditData:
-
-    def __init__(self):
-        load_dotenv()
 
     @staticmethod
     def get_token():
@@ -20,7 +16,9 @@ class RedditData:
         res = requests.post('https://www.reddit.com/api/v1/access_token',
                             auth=auth, data=data, headers=headers)
 
+        print(res)
         token = res.json()['access_token']
+        print("Token ", token)
         return token
 
     @staticmethod
